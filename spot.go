@@ -2,6 +2,8 @@ package binance
 
 import (
 	"bytes"
+	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -14,6 +16,23 @@ type SpotApi Client
 
 func (spot *SpotApi) Ping() (*http.Response, error) {
 	return spot.conn.Get(baseUrl + "/api/v3/ping")
+}
+
+func (spot *SpotApi) GetExchangeInfo(symbol string) (*ExchangeInfoMsg, error) {
+	resp, err := spot.conn.Get(baseUrl + "/api/v3/exchangeInfo")
+	if err != nil {
+		return nil, err
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var msg ExchangeInfoMsg
+	err = json.Unmarshal(body, &msg)
+	if err != nil {
+		return nil, err
+	}
+	return &msg, nil
 }
 
 func (spot *SpotApi) CreateLimitOrder(symbol string, side string, quantity string, price string, timeInForce string) (*http.Response, error) {
