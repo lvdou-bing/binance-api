@@ -4,23 +4,23 @@ type ExchangeInfoFilter struct {
 	FilterType string `json:"filterType"`
 
 	// for PRICE_FILTER
-	MinPrice string `json:"minPrice,omitempty"`
-	MaxPrice string `json:"maxPrice,omitempty"`
-	TickSize string `json:"tickSize,omitempty"`
+	MinPrice float64 `json:"minPrice,string,omitempty"`
+	MaxPrice float64 `json:"maxPrice,string,omitempty"`
+	TickSize float64 `json:"tickSize,string,omitempty"`
 
 	// for PERCENT_PRICE
-	MultiplierUp   string `json:"multiplierUp,omitempty"`
-	MultiplierDown string `json:"multiplierDown,omitempty"`
-	AvgPriceMins   int    `json:"avgPriceMins,omitempty"` // also for MIN_NOTIONAL
+	MultiplierUp   float64 `json:"multiplierUp,string,omitempty"`
+	MultiplierDown float64 `json:"multiplierDown,string,omitempty"`
+	AvgPriceMins   int     `json:"avgPriceMins,omitempty"` // also for MIN_NOTIONAL
 
 	// for LOT_SIZE and MARKET_LOT_SIZE
-	MinQty   string `json:"minQty,omitempty"`
-	MaxQty   string `json:"maxQty,omitempty"`
-	StepSize string `json:"stepSize,omitempty"`
+	MinQty   float64 `json:"minQty,string,omitempty"`
+	MaxQty   float64 `json:"maxQty,string,omitempty"`
+	StepSize float64 `json:"stepSize,string,omitempty"`
 
 	// for MIN_NOTIONAL
-	MinNotional   string `json:"minNotional,omitempty"`
-	ApplyToMarket bool   `json:"applyToMarket,omitempty"`
+	MinNotional   float64 `json:"minNotional,string,omitempty"`
+	ApplyToMarket bool    `json:"applyToMarket,omitempty"`
 
 	// for ICEBERG_PARTS
 	Limit int `json:"limit,omitempty"`
