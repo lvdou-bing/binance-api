@@ -18,7 +18,7 @@ func (spot *SpotApi) Ping() (*http.Response, error) {
 	return spot.conn.Get(baseUrl + "/api/v3/ping")
 }
 
-func (spot *SpotApi) GetExchangeInfo(symbol string) (*ExchangeInfoMsg, error) {
+func (spot *SpotApi) GetExchangeInfo() (*ExchangeInfoMsg, error) {
 	resp, err := spot.conn.Get(baseUrl + "/api/v3/exchangeInfo")
 	if err != nil {
 		return nil, err
