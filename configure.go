@@ -1,9 +1,7 @@
 package binance
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"log"
 )
 
 const (
@@ -11,21 +9,21 @@ const (
 )
 
 type Config struct {
-	Key    string
-	Secret string
+	key    string
+	secret string
+	logger *log.Logger
+	debug  bool
 }
 
-func NewConfig(configFile string) (*Config, error) {
-	f, err := ioutil.ReadFile(configFile)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
+func NewConfig(key, secret string, logger *log.Logger, debug bool) (*Config, error) {
+	if logger == nil {
+		logger = log.Default()
 	}
-	var config Config
-	err = json.Unmarshal(f, &config)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
+	config := &Config{
+		key:    key,
+		secret: secret,
+		logger: logger,
+		debug:  debug,
 	}
-	return &config, nil
+	return config, nil
 }

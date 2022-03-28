@@ -35,7 +35,7 @@ func (spot *SpotApi) GetExchangeInfo() (*ExchangeInfoMsg, error) {
 	return &msg, nil
 }
 
-func (spot *SpotApi) CreateLimitOrder(symbol string, side string, quantity string, price string, timeInForce string) (*http.Response, error) {
+func (spot *SpotApi) CreateLimitOrder(symbol string, side string, quantity string, price string, timeInForce string) (*CreateOrderRespMsg, error) {
 	values := url.Values{}
 	values.Add("type", "LIMIT")
 	values.Add("symbol", symbol)
@@ -55,15 +55,34 @@ func (spot *SpotApi) CreateLimitOrder(symbol string, side string, quantity strin
 	}
 	req.Header.Add("X-MBX-APIKEY", spot.apiKey)
 
-	dump, err := httputil.DumpRequestOut(req, true)
+	if spot.debug {
+		dump, err := httputil.DumpRequestOut(req, true)
+		if err != nil {
+			return nil, err
+		}
+		spot.logger.Printf("\n%s\n", string(dump))
+	}
+	resp, err := spot.conn.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("\n%s\n", string(dump))
-	return spot.conn.Do(req)
+	if spot.debug {
+		dump, err := httputil.DumpResponse(resp, true)
+		if err != nil {
+			return nil, err
+		}
+		spot.logger.Printf("\n%s\n", string(dump))
+	}
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var msg CreateOrderRespMsg
+	json.Unmarshal(respBody, &msg)
+	return &msg, nil
 }
 
-func (spot *SpotApi) CreateMarketBaseQuantityOrder(symbol string, side string, quantity string) (*http.Response, error) {
+func (spot *SpotApi) CreateMarketBaseQuantityOrder(symbol string, side string, quantity string) (*CreateOrderRespMsg, error) {
 	values := url.Values{}
 	values.Add("type", "MARKET")
 	values.Add("symbol", symbol)
@@ -81,15 +100,34 @@ func (spot *SpotApi) CreateMarketBaseQuantityOrder(symbol string, side string, q
 	}
 	req.Header.Add("X-MBX-APIKEY", spot.apiKey)
 
-	dump, err := httputil.DumpRequestOut(req, true)
+	if spot.debug {
+		dump, err := httputil.DumpRequestOut(req, true)
+		if err != nil {
+			return nil, err
+		}
+		spot.logger.Printf("\n%s\n", string(dump))
+	}
+	resp, err := spot.conn.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("\n%s\n", string(dump))
-	return spot.conn.Do(req)
+	if spot.debug {
+		dump, err := httputil.DumpResponse(resp, true)
+		if err != nil {
+			return nil, err
+		}
+		spot.logger.Printf("\n%s\n", string(dump))
+	}
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var msg CreateOrderRespMsg
+	json.Unmarshal(respBody, &msg)
+	return &msg, nil
 }
 
-func (spot *SpotApi) CreateMarketQuoteQuantityOrder(symbol string, side string, quoteOrderQty string) (*http.Response, error) {
+func (spot *SpotApi) CreateMarketQuoteQuantityOrder(symbol string, side string, quoteOrderQty string) (*CreateOrderRespMsg, error) {
 	values := url.Values{}
 	values.Add("type", "MARKET")
 	values.Add("symbol", symbol)
@@ -107,12 +145,32 @@ func (spot *SpotApi) CreateMarketQuoteQuantityOrder(symbol string, side string, 
 	}
 	req.Header.Add("X-MBX-APIKEY", spot.apiKey)
 
-	dump, err := httputil.DumpRequestOut(req, true)
+	if spot.debug {
+		dump, err := httputil.DumpRequestOut(req, true)
+		if err != nil {
+			return nil, err
+		}
+		spot.logger.Printf("\n%s\n", string(dump))
+	}
+
+	resp, err := spot.conn.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("\n%s\n", string(dump))
-	return spot.conn.Do(req)
+	if spot.debug {
+		dump, err := httputil.DumpResponse(resp, true)
+		if err != nil {
+			return nil, err
+		}
+		spot.logger.Printf("\n%s\n", string(dump))
+	}
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var msg CreateOrderRespMsg
+	json.Unmarshal(respBody, &msg)
+	return &msg, nil
 }
 
 func (spot *SpotApi) CancelOrderById(symbol string, orderId string) (*http.Response, error) {

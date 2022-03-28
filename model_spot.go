@@ -54,5 +54,36 @@ type ExchangeInfo struct {
 }
 
 type ExchangeInfoMsg struct {
+	// other fields are not used, wait for later complemention
 	ExchangeInfoList []*ExchangeInfo `json:"symbols"`
+}
+
+type OrderFill struct {
+	Price           float64 `json:"price,string"`
+	Qty             float64 `json:"qty,string"`
+	Commission      float64 `json:"commission,string"`
+	CommissionAsset string  `json:"commissionAsset"`
+	TradeId         int64   `json:"tradeId"`
+}
+
+// response type: ACK RESULT FULL
+type CreateOrderRespMsg struct {
+	Symbol        string `json:"symbol"`
+	OrderId       int64  `json:"orderId"`
+	OrderListId   int64  `json:"orderListId"`
+	ClientOrderId string `json:"clientOrderId"`
+	TransactTime  int64  `json:"transactTime"`
+
+	// ACK response does not contain the following fields
+	Price               float64 `json:"price,string,omitempty"`
+	OrigQty             float64 `json:"origQty,string,omitempty"`
+	ExecutedQty         float64 `json:"executedQty,string,omitempty"`
+	CummulativeQuoteQty float64 `json:"cummulativeQuoteQty,string,omitempty"`
+	Status              string  `json:"status,omitempty"`
+	TimeInForce         string  `json:"timeInForce,omitempty"`
+	Type                string  `json:"type,omitempty"`
+	Side                string  `json:"side,omitempty"`
+
+	// the following fields are only for FULL response
+	Fills []*OrderFill `json:"fills,omitempty"`
 }
