@@ -15,7 +15,7 @@ type Config struct {
 	debug  bool
 }
 
-func NewConfig(key, secret string, logger *log.Logger, debug bool) (*Config, error) {
+func NewConfig(key, secret string, logger *log.Logger, debug bool) *Config {
 	if logger == nil {
 		logger = log.Default()
 	}
@@ -25,5 +25,5 @@ func NewConfig(key, secret string, logger *log.Logger, debug bool) (*Config, err
 		logger: logger,
 		debug:  debug,
 	}
-	return config, nil
+	return config
 }
